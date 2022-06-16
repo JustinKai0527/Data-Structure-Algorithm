@@ -9,14 +9,10 @@ using namespace std;
 
 class UnionFind{
 public:
-    UnionFind(int size){
-        capacity = size;
-        root.resize(size);
-        rank.resize(size);
-
-        for(int i=0; i<size; i++){
-            rank[i] = 0;
+     UnionFind(int sz) : root(sz), rank(sz), count(sz) {
+        for (int i = 0; i < sz; i++) {
             root[i] = i;
+            rank[i] = 1;
         }
     }
 
@@ -26,7 +22,21 @@ public:
     }
 
     void Union(int x, int y){
-        
+        if(find(x) == find(y))  return;
+        else{
+            int rootx = find(x);
+            int rooty = find(y);
+            if(rank[rootx] > rank[rooty]){
+                root[rooty] = root[rootx];
+            }
+            else if(rank[rootx] < rank[rooty]){
+                root[rootx] = root[rooty];
+            }
+            else{
+                root[rooty] = root[rootx];
+                rank[rootx]++;
+            }
+        }
     }
 
     bool isConnected(int x, int y){
@@ -35,6 +45,6 @@ public:
 private:
     vector<int> root;
     vector<int> rank;
-    int capacity;
+    int count;
 };
 #endif
